@@ -1,15 +1,18 @@
-# $GetUserParam = New-Object -TypeName Scene7.getUsersParam
-# $getAllCompaniesParam = New-Object -TypeName Scene7.getAllCompaniesParam
-# $getCompanyInfoParam = New-Object -TypeName Scene7.getCompanyInfoParam
-# $getCompanyInfoParam.companyName = "tervisRender"
-# $Result = $Proxy.getCompanyInfo($getCompanyInfoParam)
-# $Result.companyInfo
+function Get-Scene7IPSAssetsByName {
+    param (
+        $companyHandle,
+        $nameArray
+    )
+    Invoke-Scene7IPSAPI -MethodName getAssetsByName -Property $PSBoundParameters |
+    Select-Object -ExpandProperty assetArray
+}
 
 function Get-Scene7IPSCompanyInfo {
     param (
         $companyName
     )
-    Invoke-Scene7IPSAPI -MethodName getCompanyInfo -Property $PSBoundParameters
+    Invoke-Scene7IPSAPI -MethodName getCompanyInfo -Property $PSBoundParameters |
+    Select-Object -ExpandProperty CompanyInfo
 }
 
 function Get-Scene7IPSWebServiceProxy {
@@ -44,5 +47,5 @@ function Invoke-Scene7IPSAPI {
         }
     }
     $Response = $Proxy.$MethodName($Parameter)
-    $Response.result
+    $Response
 }
